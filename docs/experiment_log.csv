@@ -1,0 +1,2 @@
+Model,Architecture,Image Size,Batch Size,Epochs Completed,Best Epoch,Validation Accuracy,Validation Loss,Macro F1,Weighted F1
+Model 1,Custom CNN,224x224,32,19,14,0.5962,1.1204,0.56,0.58
