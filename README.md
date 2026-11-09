@@ -1,4 +1,3 @@
-
 # AI-Powered Waste Classification for Smart Recycling
 
 ## Project Overview
@@ -147,6 +146,25 @@ MobileNetV2 was selected as the final model because it demonstrated better overa
 
 The confusion matrices for both models are available in `results/figures/`.
 
+## Prediction Pipeline
+
+A prediction pipeline was implemented in `predict.py` using the trained MobileNetV2 model.
+
+It allows users to:
+- Provide an external JPG, JPEG, or PNG image.
+- Automatically resize and preprocess the image.
+- Predict one of the nine waste categories.
+- View the predicted category and confidence score.
+- View the top three prediction results.
+
+The pipeline was tested using two additional unseen images:
+- `metal_test.png` – correctly classified as Metal.
+- `plastic_hard_test.png` – correctly classified as Plastic.
+
+An additional Jupyter Notebook, `evaluate.ipynb`, was created to evaluate these external predictions against their actual labels and display accuracy, a classification report, and a confusion matrix.
+
+These two images are additional functional tests and are separate from the original 713-image independent test set.
+
 ## Project Structure
 
 ```text
@@ -168,6 +186,10 @@ waste-classification/
 │   │   ├── custom_cnn_confusion_matrix.png
 │   │   └── mobilenetv2_confusion_matrix.png
 │   └── metrics/
+├── predict.py
+├── evaluate.ipynb
+├── metal_test.png
+├── plastic_hard_test.png
 ├── .gitignore
 ├── README.md
 └── requirements.txt
@@ -194,6 +216,18 @@ python -m ipykernel install --user --name waste-classification --display-name "P
 7. Download and extract the dataset into `data/Waste_Dataset/`.
 8. Open the notebooks in the `notebooks/` folder and select the appropriate Python kernel.
 
+### Running the Prediction Pipeline
+
+To classify a new image, run:
+
+```bash
+python predict.py metal_test.png
+```
+
+Replace `metal_test.png` with the path to your own JPG, JPEG, or PNG image.
+
+The trained model must be available at `models/mobilenetv2_best.keras`.
+
 ## Current Development Status
 
 - Dataset exploration completed.
@@ -206,6 +240,10 @@ python -m ipykernel install --user --name waste-classification --display-name "P
 - Confusion matrices generated.
 - Model comparison completed.
 - MobileNetV2 selected as the final model.
+- Image prediction pipeline implemented in `predict.py`.
+- External image prediction successfully tested.
+- Prediction confidence and top-three results implemented.
+- Evaluation notebook created in `evaluate.ipynb`.
 
 ## Future Improvements
 
@@ -213,7 +251,6 @@ python -m ipykernel install --user --name waste-classification --display-name "P
 - Improve classification of challenging waste categories.
 - Explore additional data augmentation techniques.
 - Evaluate performance using a larger and more diverse dataset.
-- Further develop the image prediction pipeline.
 
 ## Author
 
