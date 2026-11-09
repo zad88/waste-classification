@@ -1,12 +1,19 @@
+
 # AI-Powered Waste Classification for Smart Recycling
 
 ## Project Overview
 
-This project develops an image classification system using Deep Learning to identify different types of waste and support smart recycling.
+This project develops a deep learning-based image classification system to identify different types of waste and support smarter recycling processes.
 
-The system uses Convolutional Neural Networks (CNNs) to classify waste images into nine categories.
+Two deep learning approaches are implemented and compared:
+- Custom Convolutional Neural Network (CNN)
+- MobileNetV2 using Transfer Learning
+
+The objective is to evaluate both approaches and identify the model that provides better classification performance across nine waste categories.
 
 ## Waste Categories
+
+The system classifies images into nine categories:
 
 1. Cardboard
 2. Food Organics
@@ -24,18 +31,79 @@ The dataset is obtained from Kaggle:
 
 [Waste Classification Dataset](https://www.kaggle.com/datasets/adithyachalla/waste-classification/data)
 
-The dataset contains 4,752 images across nine categories.
+It contains 4,752 images across nine categories.
+
+| Category | Images |
+|---|---:|
+| Cardboard | 461 |
+| Food Organics | 411 |
+| Glass | 420 |
+| Metal | 790 |
+| Miscellaneous Trash | 495 |
+| Paper | 500 |
+| Plastic | 921 |
+| Textile Trash | 318 |
+| Vegetation | 436 |
+| **Total** | **4,752** |
+
+The dataset is divided using stratified sampling:
+
+| Dataset | Images | Percentage |
+|---|---:|---:|
+| Training | 3,326 | 70% |
+| Validation | 713 | 15% |
+| Testing | 713 | 15% |
+
+The test set is kept separate during model development and used for final evaluation on unseen images.
 
 Download the dataset and place the nine category folders inside:
 
 `data/Waste_Dataset/`
 
-The dataset is not included in this GitHub repository.
+The raw dataset is not included in this GitHub repository.
+
+## Data Preprocessing
+
+The preprocessing pipeline includes:
+
+- Resizing images to 224 × 224 pixels.
+- Converting images to RGB format.
+- Encoding the nine waste categories into numerical labels.
+- Stratified splitting into training, validation, and testing sets.
+- Normalizing Custom CNN images to the range [0, 1].
+- Applying MobileNetV2 preprocessing to scale image values to [-1, 1].
+- Applying data augmentation to the MobileNetV2 training pipeline.
+
+## Models
+
+### 1. Custom CNN
+
+A CNN architecture developed specifically for this project.
+
+It consists of:
+- Three convolutional layers with 32, 64, and 128 filters.
+- Max-pooling layers.
+- Global Average Pooling.
+- A Dense layer with 128 neurons and ReLU activation.
+- Dropout with a rate of 0.3.
+- A final Softmax layer with nine output classes.
+
+### 2. MobileNetV2 Transfer Learning
+
+MobileNetV2 uses pretrained ImageNet weights as a feature extractor.
+
+The classification head consists of:
+- Data augmentation.
+- Global Average Pooling.
+- Dropout with a rate of 0.3.
+- A final Dense layer with nine Softmax outputs.
+
+The pretrained base model is initially frozen during training.
 
 ## Technologies and Libraries
 
 - Python 3.11
-- TensorFlow 2.20
+- TensorFlow 2.20.0
 - NumPy
 - Pandas
 - OpenCV
@@ -43,6 +111,41 @@ The dataset is not included in this GitHub repository.
 - Seaborn
 - Scikit-learn
 - Jupyter Notebook
+- IPython Kernel
+
+## Experimental Results
+
+Both models were trained using the same dataset split and evaluated on the validation and independent test sets.
+
+### Validation Results
+
+| Metric | Custom CNN | MobileNetV2 |
+|---|---:|---:|
+| Accuracy | 58.06% | 71.11% |
+| Loss | 1.1303 | 0.7891 |
+| Macro F1-score | 0.55 | 0.70 |
+| Weighted F1-score | 0.56 | 0.71 |
+
+### Independent Test Results
+
+| Metric | Custom CNN | MobileNetV2 |
+|---|---:|---:|
+| Accuracy | 56.10% | 69.99% |
+| Loss | 1.1418 | 0.7795 |
+| Macro Precision | 0.61 | 0.72 |
+| Macro Recall | 0.54 | 0.70 |
+| Macro F1-score | 0.55 | 0.71 |
+| Weighted F1-score | 0.56 | 0.70 |
+
+MobileNetV2 achieved 13.89 percentage points higher test accuracy than the Custom CNN.
+
+It also achieved a higher F1-score across all nine waste categories.
+
+### Final Model Selection
+
+MobileNetV2 was selected as the final model because it demonstrated better overall classification performance and generalization to unseen images.
+
+The confusion matrices for both models are available in `results/figures/`.
 
 ## Project Structure
 
@@ -55,13 +158,16 @@ waste-classification/
 │   ├── learning_notes.md
 │   └── experiment_log.csv
 ├── models/
+│   ├── custom_cnn_best.keras
+│   └── mobilenetv2_best.keras
 ├── notebooks/
 │   ├── 01_dataset_exploration.ipynb
 │   └── 02_data_preprocessing.ipynb
 ├── results/
 │   ├── figures/
+│   │   ├── custom_cnn_confusion_matrix.png
+│   │   └── mobilenetv2_confusion_matrix.png
 │   └── metrics/
-├── report/
 ├── .gitignore
 ├── README.md
 └── requirements.txt
@@ -73,38 +179,42 @@ waste-classification/
 2. Clone or download this repository.
 3. Open the project folder in VS Code.
 4. Create and activate a virtual environment.
-5. Install the required libraries:
+5. Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-6. Install and register the Jupyter kernel if needed:
+6. Register the Jupyter kernel if needed:
 
 ```bash
 python -m ipykernel install --user --name waste-classification --display-name "Python (Waste Classification)"
 ```
 
-7. Open the notebooks in the `notebooks` folder and select the appropriate Python kernel.
+7. Download and extract the dataset into `data/Waste_Dataset/`.
+8. Open the notebooks in the `notebooks/` folder and select the appropriate Python kernel.
 
-## Current Development Progress
+## Current Development Status
 
 - Dataset exploration completed.
 - Image dimensions and quality inspected.
-- Training and validation datasets prepared.
-- Image preprocessing pipeline implemented.
-- Custom CNN architecture created and compiled.
-- Model training and evaluation are in progress.
+- Data preprocessing pipeline implemented.
+- Custom CNN architecture implemented and trained.
+- MobileNetV2 transfer learning implemented and trained.
+- Validation and independent test evaluation completed.
+- Classification reports generated.
+- Confusion matrices generated.
+- Model comparison completed.
+- MobileNetV2 selected as the final model.
 
-## Future Work
+## Future Improvements
 
-- Train and evaluate the custom CNN.
-- Implement a transfer learning model.
-- Compare model performance.
-- Evaluate classification metrics and confusion matrices.
-- Develop an image prediction pipeline.
-- Prepare the final project report.
+- Fine-tune selected MobileNetV2 layers.
+- Improve classification of challenging waste categories.
+- Explore additional data augmentation techniques.
+- Evaluate performance using a larger and more diverse dataset.
+- Further develop the image prediction pipeline.
 
 ## Author
 
-Zad Mahmoud Naanoush
+**Zad Mahmoud Naanoush**

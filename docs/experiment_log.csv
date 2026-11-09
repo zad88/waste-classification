@@ -1,3 +1,4 @@
-Model,Architecture,Image Size,Batch Size,Epochs Completed,Best Epoch,Validation Accuracy,Validation Loss,Macro F1,Weighted F1
-Model 1,Custom CNN,224x224,32,20,19,0.5941,1.0867,0.58,
-Model 2,MobileNetV2 Transfer Learning,224x224,32,20,20,0.7382,0.7742,0.73,0.74
+
+Model,          Architecture,                     Image Size,   Batch Size,   EpochsCompleted,   Validation Accuracy,    Validation Loss,       Validation Macro F1,       Validation Weighted F1,        Test Accuracy,       Test Loss,       Test Macro Precision,     Test Macro Recall,    Test Macro F1,     Test Weighted F1
+Custom CNN,     Custom CNN,                       224x224,       32,           20,                0.5806,                1.1303,                 0.55,                      0.56,                          0.5610,              1.1418,          0.61,                     0.54,                 0.55,               0.56
+MobileNetV2,    MobileNetV2 Transfer Learning,    224x224,      32,            20,                0.7111,                0.7891,                 0.70,                      0.71,                          0.6999,              0.7795,          0.72,                     0.70,                 0.71,               0.70
