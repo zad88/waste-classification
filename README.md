@@ -5,6 +5,7 @@
 This project develops a deep learning-based image classification system to identify different types of waste and support smarter recycling processes.
 
 Two deep learning approaches are implemented and compared:
+
 - Custom Convolutional Neural Network (CNN)
 - MobileNetV2 using Transfer Learning
 
@@ -71,7 +72,7 @@ The preprocessing pipeline includes:
 - Stratified splitting into training, validation, and testing sets.
 - Normalizing Custom CNN images to the range [0, 1].
 - Applying MobileNetV2 preprocessing to scale image values to [-1, 1].
-- Applying data augmentation to the MobileNetV2 training pipeline.
+- Applying data augmentation to the MobileNetV2 training pipeline, including horizontal flipping, rotation, and zoom.
 
 ## Models
 
@@ -80,6 +81,7 @@ The preprocessing pipeline includes:
 A CNN architecture developed specifically for this project.
 
 It consists of:
+
 - Three convolutional layers with 32, 64, and 128 filters.
 - Max-pooling layers.
 - Global Average Pooling.
@@ -92,6 +94,7 @@ It consists of:
 MobileNetV2 uses pretrained ImageNet weights as a feature extractor.
 
 The classification head consists of:
+
 - Data augmentation.
 - Global Average Pooling.
 - Dropout with a rate of 0.3.
@@ -114,35 +117,36 @@ The pretrained base model is initially frozen during training.
 
 ## Experimental Results
 
-Both models were trained using the same dataset split and evaluated on the validation and independent test sets.
+Both models were trained for 50 epochs using the same dataset split and evaluated on the validation and independent test sets.
 
-### Validation Results
+### Training and Validation Results
 
 | Metric | Custom CNN | MobileNetV2 |
 |---|---:|---:|
-| Accuracy | 58.06% | 71.11% |
-| Loss | 1.1303 | 0.7891 |
-| Macro F1-score | 0.55 | 0.70 |
-| Weighted F1-score | 0.56 | 0.71 |
+| Epochs Completed | 50 | 50 |
+| Training Accuracy | 67.29% | 80.37% |
+| Training Loss | 0.8929 | 0.5768 |
+| Validation Accuracy | 69.00% | 76.44% |
+| Validation Loss | 0.8963 | 0.6708 |
 
 ### Independent Test Results
 
 | Metric | Custom CNN | MobileNetV2 |
 |---|---:|---:|
-| Accuracy | 56.10% | 69.99% |
-| Loss | 1.1418 | 0.7795 |
-| Macro Precision | 0.61 | 0.72 |
-| Macro Recall | 0.54 | 0.70 |
-| Macro F1-score | 0.55 | 0.71 |
-| Weighted F1-score | 0.56 | 0.70 |
+| Accuracy | 65.92% | 75.46% |
+| Loss | 0.9127 | 0.6493 |
+| Macro Precision | 0.67 | 0.76 |
+| Macro Recall | 0.64 | 0.76 |
+| Macro F1-score | 0.65 | 0.76 |
+| Weighted F1-score | 0.65 | 0.75 |
 
-MobileNetV2 achieved 13.89 percentage points higher test accuracy than the Custom CNN.
+MobileNetV2 achieved 9.54 percentage points higher test accuracy than the Custom CNN.
 
-It also achieved a higher F1-score across all nine waste categories.
+It also achieved a higher F1-score across all nine waste categories, demonstrating stronger overall classification performance.
 
 ### Final Model Selection
 
-MobileNetV2 was selected as the final model because it demonstrated better overall classification performance and generalization to unseen images.
+MobileNetV2 was selected as the final model because it demonstrated better overall classification performance, lower loss, and stronger generalization to unseen images.
 
 The confusion matrices for both models are available in `results/figures/`.
 
@@ -151,6 +155,7 @@ The confusion matrices for both models are available in `results/figures/`.
 A prediction pipeline was implemented in `predict.py` using the trained MobileNetV2 model.
 
 It allows users to:
+
 - Provide an external JPG, JPEG, or PNG image.
 - Automatically resize and preprocess the image.
 - Predict one of the nine waste categories.
@@ -158,12 +163,13 @@ It allows users to:
 - View the top three prediction results.
 
 The pipeline was tested using two additional unseen images:
+
 - `metal_test.png` – correctly classified as Metal.
 - `plastic_hard_test.png` – correctly classified as Plastic.
 
 An additional Jupyter Notebook, `evaluate.ipynb`, was created to evaluate these external predictions against their actual labels and display accuracy, a classification report, and a confusion matrix.
 
-These two images are additional functional tests and are separate from the original 713-image independent test set.
+These two images are additional functional tests and are separate from the original 713-image independent test set. They should not be interpreted as a representative evaluation of overall model performance.
 
 ## Project Structure
 
@@ -233,12 +239,12 @@ The trained model must be available at `models/mobilenetv2_best.keras`.
 - Dataset exploration completed.
 - Image dimensions and quality inspected.
 - Data preprocessing pipeline implemented.
-- Custom CNN architecture implemented and trained.
-- MobileNetV2 transfer learning implemented and trained.
+- Custom CNN architecture implemented and trained for 50 epochs.
+- MobileNetV2 transfer learning implemented and trained for 50 epochs.
 - Validation and independent test evaluation completed.
-- Classification reports generated.
+- Updated classification reports generated.
 - Confusion matrices generated.
-- Model comparison completed.
+- Model comparison completed using the latest experimental results.
 - MobileNetV2 selected as the final model.
 - Image prediction pipeline implemented in `predict.py`.
 - External image prediction successfully tested.
@@ -248,7 +254,7 @@ The trained model must be available at `models/mobilenetv2_best.keras`.
 ## Future Improvements
 
 - Fine-tune selected MobileNetV2 layers.
-- Improve classification of challenging waste categories.
+- Improve classification of challenging waste categories, particularly Miscellaneous Trash.
 - Explore additional data augmentation techniques.
 - Evaluate performance using a larger and more diverse dataset.
 
